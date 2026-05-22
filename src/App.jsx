@@ -1,24 +1,24 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef } from "react";
 const letters = "abcdefghijklmnopqrstuvwxyz";
 const numbers = "0123456789";
 const symbols = "!@#$%^&*()-_=+[]{}|;:'\",.<>?/`~";
 
 function App() {
-  const [name, setName] = useState("");
+  const nameRef = useRef();
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
-  const [specializzazione, setSpecializzazione] = useState("");
-  const [esperienza, setEsperienza] = useState("");
+  const specializzazioneRef = useRef();
+  const esperienzaRef = useRef();
   const [description, setDescription] = useState("");
 
   const submit = (e) => {
     e.preventDefault();
     if (
-      !name.trim() ||
+      !nameRef.current.value.trim() ||
       !username.trim() ||
       !password.trim() ||
-      !specializzazione.trim() ||
-      parseInt(esperienza) <= 0 ||
+      !specializzazioneRef.current.value.trim() ||
+      parseInt(esperienzaRef.current.value) <= 0 ||
       !description.trim() ||
       !isUsernameValid ||
       !isDescriptionValid ||
@@ -28,11 +28,11 @@ function App() {
       return;
     }
     console.log({
-      name,
+      name: nameRef.current.value,
       username,
       password,
-      specializzazione,
-      esperienza,
+      specializzazione: specializzazioneRef.current.value,
+      esperienza: esperienzaRef.current.value,
       description,
     });
   };
@@ -63,12 +63,7 @@ function App() {
     <div>
       <form onSubmit={submit}>
         <section>
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Nome Completo"
-          />
+          <input type="text" ref={nameRef} placeholder="Nome Completo" />
         </section>
         <section>
           <input
@@ -101,10 +96,7 @@ function App() {
           )}
         </section>
         <section>
-          <select
-            value={specializzazione}
-            onChange={(e) => setSpecializzazione(e.target.value)}
-          >
+          <select ref={specializzazioneRef}>
             <option value="">Seleziona...</option>
             <option value="Full Stack">Full Stack</option>
             <option value="Frontend">Frontend</option>
@@ -114,8 +106,7 @@ function App() {
         <section>
           <input
             type="number"
-            value={esperienza}
-            onChange={(e) => setEsperienza(e.target.value)}
+            ref={esperienzaRef}
             placeholder="Anni di esperienza"
           />
         </section>
